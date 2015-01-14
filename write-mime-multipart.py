@@ -24,9 +24,6 @@ starts_with_mappings = {
 }
 
 mimetypes.add_type('text/x-markdown', '.md')
-mimetypes.add_type('text/x-kube-pod', '.pod')
-mimetypes.add_type('text/x-kube-service', '.service')
-mimetypes.add_type('text/x-kube-replica', '.replica')
 
 def guess_mimetype(path):
     global args
@@ -84,8 +81,7 @@ def main():
             data = MIMEAudio(content, _subtype=subtype)
         else:
             data = MIMEBase(maintype, subtype)
-            with open(path) as fd:
-                data.set_payload(fd.read())
+            data.set_payload(content)
             encoders.encode_base64(data)
 
         if args.merge:
