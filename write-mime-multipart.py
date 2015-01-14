@@ -58,7 +58,7 @@ def main():
 
     for part in args.part:
         if ':' in part:
-            path, mimetype = part.split(':')
+            path, mimetype = part.split(':', 1)
             encoding = None
         else:
             path = part
@@ -69,7 +69,12 @@ def main():
                 'for file $part.'
             sys.exit(1)
 
-        maintype, subtype = mimetype.split('/', 1)
+        try:
+            maintype, subtype = mimetype.split('/', 1)
+        except ValueError:
+            print >>sys.stderr, 'ERROR: invalid mimetype: %s' % (
+                mimetype)
+            sys.exit(1)
         with open(path) as fd:
             content = fd.read()
 
